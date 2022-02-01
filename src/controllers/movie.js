@@ -1,3 +1,4 @@
+const { screening } = require('../utils/prisma');
 const prisma = require('../utils/prisma');
 
 // get movies=======================================
@@ -108,9 +109,57 @@ const getMovieByIdOrName = async(req,res) => {
     }
 }
 
+// update movie and screening=============================
+const updateMovie = async(req, res) => {
+    const { id } = req.params;
+    const { title, runtimeMins, screenings } = req.body;
+
+    if(screenings){
+        const updatedMovie = await updateMovieWithScreening(screenings, title, runtimeMins, id)
+        return res.json({data: updatedMovie})
+    }else{
+        const updatedMovie = await prisma.movie.update({
+            where: {
+                id : parseInt(id)
+            },
+            data: {
+                title: title,
+                runtimeMins: runtimeMins, 
+            }
+        })
+        return res.json({data: updatedMovie})
+    }
+}
+
+// update movie by screening==============================
+const updateMovieWithScreening = async (screenings, title, runtimeMins, id) => {
+    return await prisma.movie.update({
+        where: {
+            id : parseInt(id)
+        },
+        data: {
+            title: title,
+            runtimeMins: runtimeMins,
+            screenings: {
+                update: {
+                    where: {
+                        id: screenings[0].id,
+                    },
+                    data: {
+                        startsAt: new Date(screenings[0].startsAt)
+                    }
+                }
+            }
+        },
+        include: {
+            screenings: true
+        }
+    })
+}
 
 module.exports = {
     getMovies,
     createMovie,
-    getMovieByIdOrName
+    getMovieByIdOrName,
+    updateMovie
 }
