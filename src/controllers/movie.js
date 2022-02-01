@@ -81,11 +81,36 @@ const createMovieWithScreening = async (title, runtimeMins, screenings) => {
             screenings: true
         }
     })
+}
 
+// get a single movie by id or name=============================
+const getMovieByIdOrName = async(req,res) => {
+    const { identifier } = req.params;
+    
+    const movieByNameORId = await prisma.movie.findMany({
+        where: {
+            OR: [
+                {
+                    title : {
+                        contains: identifier
+                    }
+                },
+                {
+                    id : !isNaN(identifier) ? parseInt(identifier): 0
+                }
+            ]
+        }
+    })
+    if(movieByNameORId.length <= 0) {
+        return res.status(400).send('Movie not found!');
+    }else{
+        return res.json({data: movieByNameORId})
+    }
 }
 
 
 module.exports = {
     getMovies,
-    createMovie
+    createMovie,
+    getMovieByIdOrName
 }
