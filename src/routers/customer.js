@@ -10,4 +10,5 @@ const router = express.Router();
 // that looks like http://localhost:4000/customer/register
 router.post("/register", createCustomer);
 
+
 module.exports = router;

@@ -103,3 +103,5 @@ seed()
         await prisma.$disconnect();
     })
     .finally(() => process.exit(1));
+
+
