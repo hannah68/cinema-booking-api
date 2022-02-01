@@ -115,7 +115,7 @@ const updateMovie = async(req, res) => {
     const { title, runtimeMins, screenings } = req.body;
 
     if(screenings){
-        const updatedMovie = await updateMovieWithScreening(screenings, title, runtimeMins, id)
+        const updatedMovie = await updateMovieAndScreening(screenings, title, runtimeMins, id)
         return res.json({data: updatedMovie})
     }else{
         const updatedMovie = await prisma.movie.update({
@@ -132,7 +132,7 @@ const updateMovie = async(req, res) => {
 }
 
 // update movie by screening==============================
-const updateMovieWithScreening = async (screenings, title, runtimeMins, id) => {
+const updateMovieAndScreening = async (screenings, title, runtimeMins, id) => {
     return await prisma.movie.update({
         where: {
             id : parseInt(id)
