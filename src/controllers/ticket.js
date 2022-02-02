@@ -1,7 +1,7 @@
 const prisma = require('../utils/prisma');
 
 const createTicket = async(req,res) => {
-    const {customerId, screeningId} = req.body;
+    const { customerId, screeningId } = req.body;
    
     const createTicket = await prisma.ticket.create({
         data: {

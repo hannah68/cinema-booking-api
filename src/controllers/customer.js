@@ -1,11 +1,7 @@
 const prisma = require('../utils/prisma');
 
 const createCustomer = async (req, res) => {
-    const {
-        name,
-        phone,
-        email
-    } = req.body;
+    const { name, phone, email } = req.body;
 
     /**
      * @tutorial https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#create-a-related-record
