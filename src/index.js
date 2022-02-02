@@ -15,24 +15,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-
-
-
-// Tell express to use your routers here
 const customerRouter = require('./routers/customer');
 const moviesRouter = require('./routers/movie');
 const screenRouter = require('./routers/screen');
+const ticketRouter = require('./routers/ticket');
+const reviewRouter = require('./routers/review');
 
 
 app.use('/customer', customerRouter);
 app.use('/movies', moviesRouter);
-app.use('/screen', screenRouter)
+app.use('/screen', screenRouter);
+app.use('/ticket', ticketRouter);
+app.use('/movies/:id/review', reviewRouter);
 
 
-
-
-// Set up a default "catch all" route to use when someone visits a route
-// that we haven't built
 app.get('*', (req, res) => {
     res.json({ ok: true });
 });

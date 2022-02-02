@@ -1,4 +1,3 @@
-// This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
@@ -17,6 +16,7 @@ model Customer {
   name        String
   contact     Contact?
   tickets     Ticket[]
+  review      Review[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -34,6 +34,7 @@ model Contact {
 model Movie {
   id          Int         @id @default(autoincrement())
   screenings  Screening[]
+  review      Review[]
   title       String
   runtimeMins Int
   createdAt   DateTime    @default(now())
@@ -68,4 +69,15 @@ model Ticket {
   customerId    Int
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model Review {
+  id            Int       @id @default(autoincrement())
+  review        String
+  star          Int
+  date          DateTime
+  customer      Customer  @relation(fields: [customerId], references: [id])
+  customerId    Int
+  movie       Movie     @relation(fields: [movieId], references: [id])
+  movieId       Int
 }

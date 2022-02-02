@@ -2,14 +2,15 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function seed() {
-    await createCustomer();
+    const customer = await createCustomer();
     const movies = await createMovies();
     const screens = await createScreens();
     await createScreenings(screens, movies);
-
+    await createReviews(customer, movies)
     process.exit(0);
 }
 
+// create customer=============================================
 async function createCustomer() {
     const customer = await prisma.customer.create({
         data: {
@@ -30,6 +31,7 @@ async function createCustomer() {
     return customer;
 }
 
+// create movies============================================
 async function createMovies() {
     const rawMovies = [
         { title: 'The Matrix', runtimeMins: 120 },
@@ -46,6 +48,7 @@ async function createMovies() {
     return movies;
 }
 
+// create screens=============================================
 async function createScreens() {
     const rawScreens = [
         { number: 1 }, { number: 2 }
@@ -63,6 +66,7 @@ async function createScreens() {
     return screens;
 }
 
+// create screenings=====================================
 async function createScreenings(screens, movies) {
     const screeningDate = new Date();
 
@@ -88,6 +92,33 @@ async function createScreenings(screens, movies) {
         }
     }
 }
+
+// create review============================================
+async function createReviews(customer, movies){
+    const reviewDate = new Date();
+    
+    for (let i = 0; i < movies.length; i++) {
+        const createReviews = await prisma.review.create({
+            data: {
+                review: 'the movie was great',
+                star: 4,
+                date: reviewDate,
+                customer: {
+                    connect: {
+                        id: customer.id
+                    }
+                },
+                movie: {
+                    connect: {
+                        id: movies[i].id
+                    }
+                }
+            }
+        })
+        console.log('review created', createReviews);
+    }
+}
+
 
 seed()
     .catch(async e => {
