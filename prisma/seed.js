@@ -27,7 +27,6 @@ async function createCustomer() {
     });
 
     console.log('Customer created', customer);
-
     return customer;
 }
 
@@ -43,9 +42,7 @@ async function createMovies() {
         const movie = await prisma.movie.create({ data: rawMovie });
         movies.push(movie);
     }
-
     console.log('Movies created', movies);
-
     return movies;
 }
 
@@ -60,12 +57,9 @@ async function createScreens() {
         const screen = await prisma.screen.create({
             data: rawScreen
         });
-
         console.log('Screen created', screen);
-
         screens.push(screen);
     }
-
     return screens;
 }
 
@@ -75,7 +69,6 @@ async function createScreenings(screens, movies) {
     for (const screen of screens) {
         for (let i = 0; i < movies.length; i++) {
             screeningDate.setDate(screeningDate.getDate() + i);
-
             const screening = await prisma.screening.create({
                 data: {
                     startsAt: screeningDate,
@@ -91,7 +84,6 @@ async function createScreenings(screens, movies) {
                     }
                 }
             });
-
             console.log('Screening created', screening);
         }
     }
