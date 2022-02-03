@@ -147,7 +147,8 @@ const updateMovieAndScreening = async (screenings, title, runtimeMins, id) => {
                         id: screenings[0].id,
                     },
                     data: {
-                        startsAt: new Date(screenings[0].startsAt)
+                        startsAt: new Date(screenings[0].startsAt),
+                        screenId: screenings[i].screenId
                     }
                 }
             }
